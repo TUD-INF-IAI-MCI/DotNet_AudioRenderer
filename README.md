@@ -19,7 +19,7 @@ This small piece of software allows for a fast and easy text to speech output as
 This project is configured as a 32bit project. It can easily been compiled as x64 or mixed - but after doing so, the project is no longer able to find installed 32bit voices. So handle with care if you want to use your 32bit voices.
 
 ### Submodules
-Keep attention to get and update all the embedded submodules. Sometimes it seems to be necessary to update the submodules resources – do not submit this to the main branch of submodule
+Keep attention to get and update all the embedded submodules. Sometimes it seems to be necessary to update the submodules' resources – do not submit this to the master branch of submodule
 
 * Logger [TUD-INF-IAI-MCI/DotNet_Logger](https://github.com/TUD-INF-IAI-MCI/DotNet_Logger) - to log the audio output
 
