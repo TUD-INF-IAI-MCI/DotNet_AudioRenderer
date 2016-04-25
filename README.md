@@ -10,6 +10,26 @@ This small piece of software allows for a fast and easy text to speech output as
 
 --	TODO: build a small workflow
 
+
+To define the standard culture of the voice to use, use the app.config file of your programm and add e.g.:
+
+```
+	<appSettings>
+		<add key="DefaultCulture" value="en-US" />
+	</appSettings>
+```
+
+The standard voice to use can be definded in the same way:
+
+```
+	<appSettings>
+		<add key="StandardVoice" value="ScanSoft Steffi_Full_22kHz, ScanSoft Steffi_Dri40_16kHz" />
+	</appSettings>
+```
+
+ATTENTION: The standard culture will override the standrd voice if it don't fit together.
+ATTENTION: The project is only able to find voices of the same target plattorm type. This means if you compile it as x86 it is only able to find 32bit voices. If you compile it as x64 it is only able to identify 64bit voices.
+	
 ### Example
 
 --	TODO: build a small example

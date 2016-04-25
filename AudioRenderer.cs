@@ -62,6 +62,7 @@ namespace tud.mci.tangram.audio
         #region Constructor / Destructor / Singleton
         AudioRenderer()
         {
+            GetVoices();
             setDefaultCulture();
             setDefaultVoice();
             Speaker.SetOutputToDefaultAudioDevice();
@@ -134,7 +135,7 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// Sets the name of the standard voice.
         /// </summary>
-        /// <param name="voiceNames">A comma seperated list of voice names. The first fit will set the standard used voice.</param>
+        /// <param name="voiceNames">A comma separated list of voice names. The first fit will set the standard used voice.</param>
         /// <param name="ignoreCulture">if set to <c>true</c> a conflict between the set default voice culture and the voice name is ignored.</param>
         public void SetStandardVoiceName(String voiceNames, bool ignoreCulture = true)
         {
@@ -209,7 +210,7 @@ namespace tud.mci.tangram.audio
         }
 
         /// <summary>
-        /// Returns all available voices voices.
+        /// Returns all available voices.
         /// </summary>
         /// <returns>List of voice informations</returns>
         public List<Voice> GetVoices()
@@ -244,7 +245,7 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// Gets a installed voice by name if exist.
         /// </summary>
-        /// <param name="name">the name of the voice to serach for</param>
+        /// <param name="name">the name of the voice to search for</param>
         /// <returns>the corresponding voice struct or an empty voice</returns>
         public Voice GetVoiceByName(string name)
         {
@@ -352,28 +353,28 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer and stops all other sounds.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
+        /// <param name="text">The text to speak.</param>
         /// <returns></returns>
         public bool PlaySoundImmediately(String text) { AbortSound(); return PlaySound(text, StandardVoice); }
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer and stops all other sounds.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
-        /// <param name="voice">The voice that should be used for speeking.</param>
+        /// <param name="text">The text to speak.</param>
+        /// <param name="voice">The voice that should be used for speaking.</param>
         /// <returns></returns>
         public bool PlaySoundImmediately(String text, Voice voice) { AbortSound(); return PlaySound(text, voice.Name); }
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer and stops all other sounds.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
-        /// <param name="voice">The name of the voice that should be used for speeking.</param>
+        /// <param name="text">The text to speak.</param>
+        /// <param name="voice">The name of the voice that should be used for speaking.</param>
         /// <returns></returns>
         public bool PlaySoundImmediately(String text, String voice) { AbortSound(); return PlaySound(text, voice); }
 
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
+        /// <param name="text">The text to speak.</param>
         /// <returns></returns>
         public bool PlaySound(String text)
         {
@@ -384,15 +385,15 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
-        /// <param name="voice">The voice that should be used for speeking.</param>
+        /// <param name="text">The text to speak.</param>
+        /// <param name="voice">The voice that should be used for speaking.</param>
         /// <returns></returns>
         public bool PlaySound(String text, Voice voice) { return PlaySound(text, voice.Name); }
         /// <summary>
         /// Plays a given text as sound via SpeechSynthesizer.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
-        /// <param name="voice">The name of the voice that should be used for speeking.</param>
+        /// <param name="text">The text to speak.</param>
+        /// <param name="voice">The name of the voice that should be used for speaking.</param>
         /// <returns></returns>
         public bool PlaySound(String text, String voice)
         {
@@ -473,7 +474,7 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// Speaks a given text.
         /// </summary>
-        /// <param name="text">The text to speek.</param>
+        /// <param name="text">The text to speak.</param>
         /// <param name="voiceName">Name of the voice.</param>
         /// <returns>True if the text could be enqueued</returns>
         private bool speakText(String text, String voiceName)
@@ -575,7 +576,7 @@ namespace tud.mci.tangram.audio
 
         #endregion
 
-        #region Queueing
+        #region Queuing
 
         #region Thread
         void createOutputQueueThread()
