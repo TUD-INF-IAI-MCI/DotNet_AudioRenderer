@@ -498,7 +498,6 @@ namespace tud.mci.tangram.audio
                         Speaker.SelectVoice(voiceName);
                         Speaker.SpeakAsync(text);
 
-                        Logger.Instance.Log(LogPriority.MIDDLE, this, "[AUDIO] Text: " + text);
                         fireTextSpokenEvent(text);
                     }
                     else
@@ -531,7 +530,6 @@ namespace tud.mci.tangram.audio
             Speaker.SetOutputToDefaultAudioDevice();
             Speaker.SpeakSsmlAsync(str);
 
-            Logger.Instance.Log(LogPriority.MIDDLE, this, "[AUDIO] Wave: " + path);
             fireFilePlayedEvent(path);
 
             return true;
@@ -550,7 +548,6 @@ namespace tud.mci.tangram.audio
             if (Speaker.GetCurrentlySpokenPrompt() != null)
             {
                 Speaker.SpeakAsyncCancel(Speaker.GetCurrentlySpokenPrompt());
-                Logger.Instance.Log(LogPriority.MIDDLE, this, "[AUDIO] Abort current sound");
                 fireStopedEvent();
                 return true;
             }
@@ -570,7 +567,6 @@ namespace tud.mci.tangram.audio
         {
             OutputQueue.Clear();
             Speaker.SpeakAsyncCancelAll();
-            Logger.Instance.Log(LogPriority.MIDDLE, this, "[AUDIO] Abort all sounds");
             fireStopedEvent();
         }
 
