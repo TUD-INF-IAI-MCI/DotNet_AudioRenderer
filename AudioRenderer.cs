@@ -102,8 +102,7 @@ namespace tud.mci.tangram.audio
         #endregion
 
         #region synthesizer events
-
-
+        
         void _speaker_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
             firefinishedEvent();
@@ -345,8 +344,7 @@ namespace tud.mci.tangram.audio
             }
             catch { }
         }
-
-
+        
         #endregion
 
         #region Play functions
@@ -603,6 +601,7 @@ namespace tud.mci.tangram.audio
             outputQueueThread.IsBackground = true;
             outputQueueThread.Start();
         }
+
         void checkOutputQueue()
         {
             while (_run)
@@ -697,7 +696,6 @@ namespace tud.mci.tangram.audio
         /// Occurs when a audio output was finished successfully.
         /// </summary>
         public event EventHandler<EventArgs> Finished;
-
 
         void fireTextSpokenEvent(string text)
         {
@@ -803,7 +801,7 @@ namespace tud.mci.tangram.audio
         /// </summary>
         public readonly String Gender;
         /// <summary>
-        /// Give some information about the adge of the speaker if set.
+        /// Give some information about the age of the speaker if set.
         /// </summary>
         public readonly String Adge;
         public Voice(string name, String culture, String gender, String adge)
