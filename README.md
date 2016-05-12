@@ -12,7 +12,7 @@ This small piece of software allows for a fast and easy text to speech output as
 
 To define the standard culture of the voice to use, use the app.config file of your program and add e.g.:
 
-```
+``` XML 
 	<appSettings>
 		<add key="DefaultCulture" value="en-US" />
 	</appSettings>
@@ -20,7 +20,7 @@ To define the standard culture of the voice to use, use the app.config file of y
 
 The standard voice to use can be definded in the same way:
 
-```
+``` XML 
 	<appSettings>
 		<add key="StandardVoice" value="ScanSoft Steffi_Full_22kHz, ScanSoft Steffi_Dri40_16kHz" />
 	</appSettings>
@@ -35,7 +35,7 @@ The standard voice to use can be definded in the same way:
 
 Because the AudioRenderer is a singleton, you can define a static global variable for it in your class.
 
-```
+``` C# 
 /// <summary>
 /// The singleton instance of the global available audio renderer
 /// </summary>
@@ -46,19 +46,19 @@ static AudioRenderer audio = AudioRenderer.Instance;
 
 To play a text string via TTS simply call
 
-```
+``` C# 
 audio.PlaySound("welcome");
 ```
 
 If a currently ongoing audio-output should be aborted and the new one should be played call
 
-```
+``` C# 
 audio.PlaySoundImmediately("good by");
 ```
 
 The voice to use can be adapted for every call as well
 
-```
+``` C# 
 audio.PlaySound("welcome everybody", "ScanSoft Steffi_Full_22kHz");
 ```
 
@@ -66,19 +66,19 @@ audio.PlaySound("welcome everybody", "ScanSoft Steffi_Full_22kHz");
 
 To play sound wav files you can call
 
-```
+``` C#
 audio.PlayWave("path/to/a/file.wav");
 ```
 
 If you want to play a standard windows sound, you may want to use some of the default defined sounds in the `StandardSounds` enum
 
-```
+``` C# 
 audio.PlayWave(StandardSounds.Ping);
 ```
 
 Of course, you can stop all ongoing audio-outputs to play the wav immediately 
 
-```
+``` C# 
 audio. PlayWaveImmediately(StandardSounds.Critical);
 ```
 
