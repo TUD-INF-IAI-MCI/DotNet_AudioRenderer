@@ -79,7 +79,7 @@ audio.PlayWave(StandardSounds.Ping);
 Of course, you can stop all ongoing audio-outputs to play the wav immediately 
 
 ``` C# 
-audio. PlayWaveImmediately(StandardSounds.Critical);
+audio.PlayWaveImmediately(StandardSounds.Critical);
 ```
 
 ## ATTENTION!
