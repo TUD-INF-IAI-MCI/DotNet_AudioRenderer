@@ -59,13 +59,21 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// The speed Level for the speech output
         /// </summary>
-        public static int Speed
+        public volatile static int Speed
         {
             get { return _speed; }
             set { _speed = Math.Min(10, Math.Max(-10, value)); }
         }
 
         private static String StandardVoice;
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is currently playing a sound or not.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is playing; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsPlaying { get; private set; }
 
         #endregion
 
@@ -504,8 +512,9 @@ namespace tud.mci.tangram.audio
                         Speaker.Rate = Convert.ToInt32(Speed);
                         Speaker.Volume = Convert.ToInt32(Volume);
                         Speaker.SelectVoice(voiceName);
+                        IsPlaying = true;
                         Speaker.SpeakAsync(text);
-
+                        IsPlaying = false;
                         fireTextSpokenEvent(text);
                     }
                     else
@@ -536,8 +545,10 @@ namespace tud.mci.tangram.audio
             str += "</speak>";
 
             Speaker.SetOutputToDefaultAudioDevice();
-            Speaker.SpeakSsmlAsync(str);
 
+            IsPlaying = true;
+            Speaker.SpeakSsmlAsync(str);
+            IsPlaying = false;
             fireFilePlayedEvent(path);
 
             return true;
@@ -556,6 +567,7 @@ namespace tud.mci.tangram.audio
             if (Speaker.GetCurrentlySpokenPrompt() != null)
             {
                 Speaker.SpeakAsyncCancel(Speaker.GetCurrentlySpokenPrompt());
+                IsPlaying = false;
                 fireStopedEvent();
                 return true;
             }
@@ -575,6 +587,7 @@ namespace tud.mci.tangram.audio
         {
             OutputQueue.Clear();
             Speaker.SpeakAsyncCancelAll();
+            IsPlaying = false;
             fireStopedEvent();
         }
 
