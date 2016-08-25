@@ -123,6 +123,7 @@ namespace tud.mci.tangram.audio
         
         void _speaker_SpeakCompleted(object sender, SpeakCompletedEventArgs e)
         {
+            IsPlaying = false;
             firefinishedEvent();
         }
 
@@ -514,7 +515,6 @@ namespace tud.mci.tangram.audio
                         Speaker.SelectVoice(voiceName);
                         IsPlaying = true;
                         Speaker.SpeakAsync(text);
-                        IsPlaying = false;
                         fireTextSpokenEvent(text);
                     }
                     else
@@ -548,7 +548,6 @@ namespace tud.mci.tangram.audio
 
             IsPlaying = true;
             Speaker.SpeakSsmlAsync(str);
-            IsPlaying = false;
             fireFilePlayedEvent(path);
 
             return true;
