@@ -59,7 +59,7 @@ namespace tud.mci.tangram.audio
         /// <summary>
         /// The speed Level for the speech output
         /// </summary>
-        public volatile static int Speed
+        public static int Speed
         {
             get { return _speed; }
             set { _speed = Math.Min(10, Math.Max(-10, value)); }
