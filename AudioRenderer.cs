@@ -46,14 +46,24 @@ namespace tud.mci.tangram.audio
         static Queue _outputQueue = new Queue();
         static Queue OutputQueue = Queue.Synchronized(_outputQueue);
 
+        volatile static int _volume = 100;
         /// <summary>
         /// The volume level for the speech output
         /// </summary>
-        public volatile static int Volume = 100;
+        public static int Volume { 
+            get { return _volume; } 
+            set { _volume = Math.Min(100, Math.Max(0,value)); } 
+        }
+
+        volatile static int _speed = 1;
         /// <summary>
         /// The speed Level for the speech output
         /// </summary>
-        public volatile static int Speed = 1;
+        public static int Speed
+        {
+            get { return _speed; }
+            set { _speed = Math.Min(10, Math.Max(-10, value)); }
+        }
 
         private static String StandardVoice;
 
