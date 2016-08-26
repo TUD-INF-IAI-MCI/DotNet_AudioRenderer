@@ -694,6 +694,16 @@ namespace tud.mci.tangram.audio
             catch { }
             return false;
         }
+
+        /// <summary>
+        /// Get the number of elements in the queue.
+        /// </summary>
+        /// <returns>Amount of output requests in the queue</returns>
+        public int NumberInQueue()
+        {
+            return OutputQueue.Count;
+        }
+
         #endregion
 
         #region event
