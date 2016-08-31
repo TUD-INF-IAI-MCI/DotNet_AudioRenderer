@@ -94,7 +94,7 @@ namespace tud.mci.tangram.audio
             try
             {
                 _run = false;
-                this.outputQueueThread.Abort();
+                if(this.outputQueueThread != null) this.outputQueueThread.Abort();
                 Abort();
             }
             catch { }
@@ -578,7 +578,7 @@ namespace tud.mci.tangram.audio
         /// </summary>
         public void Abort()
         {
-            this.outputQueueThread.Abort();
+            if(this.outputQueueThread != null)this.outputQueueThread.Abort();
             AbortSound();
         }
 
