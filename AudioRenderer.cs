@@ -57,7 +57,9 @@ namespace tud.mci.tangram.audio
 
         volatile static int _speed = 1;
         /// <summary>
-        /// The speed Level for the speech output
+        /// The speed Level for the speech output. 
+        /// Must be a value between -10 and 10. Default is 1.
+        /// The value will be automatically fitted into this range.
         /// </summary>
         public static int Speed
         {
