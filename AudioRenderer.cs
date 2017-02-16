@@ -584,12 +584,26 @@ namespace tud.mci.tangram.audio
             AbortSound();
         }
 
+        /// <summary>
+        /// Aborts all sound.
+        /// </summary>
         public void AbortSound()
         {
             OutputQueue.Clear();
             Speaker.SpeakAsyncCancelAll();
             IsPlaying = false;
             fireStopedEvent();
+        }
+
+        /// <summary>
+        /// Clears the current queue for sound outputs but do not abort the current ongoing output.
+        /// </summary>
+        public void ClearQueue()
+        {
+            if (OutputQueue != null)
+            {
+                OutputQueue.Clear();
+            }
         }
 
         #endregion
