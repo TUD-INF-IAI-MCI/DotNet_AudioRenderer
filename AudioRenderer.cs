@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.IO;
 using System.Speech.Synthesis;
 using System.Threading;
-using System.Collections;
-using System.IO;
 using System.Threading.Tasks;
-using System.Globalization;
-using System.Configuration;
 
 namespace tud.mci.tangram.audio
 {
+    /// <summary>
+    /// Singleton class for easy accessing audio and text to speech (TTS)
+    /// functionalities of the .Net framework.
+    /// </summary>
+    /// <seealso cref="System.IDisposable" />
     public sealed class AudioRenderer : IDisposable
     {
         #region Members
@@ -80,12 +85,16 @@ namespace tud.mci.tangram.audio
         #endregion
 
         #region Constructor / Destructor / Singleton
+        /// <summary>
+        /// Prevents a default instance of the <see cref="AudioRenderer"/> class from being created.
+        /// </summary>
         AudioRenderer()
         {
             GetVoices();
             setDefaultCulture();
             setDefaultVoice();
             Speaker.SetOutputToDefaultAudioDevice();
+            loadConfiguration();
             //Speaker.SpeakCompleted += new EventHandler<SpeakCompletedEventArgs>(speaker_SpeakCompleted);
             //Speaker.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(speaker_SpeakProgress);
             //Speaker.SpeakStarted += new EventHandler<SpeakStartedEventArgs>(speaker_SpeakStarted);
@@ -816,6 +825,109 @@ namespace tud.mci.tangram.audio
             catch (Exception)
             { }
         }
+
+        #endregion
+
+        #region Configuration
+
+        /// <summary>
+        /// Loads the app config configurations if set.
+        /// </summary>
+        internal void loadConfiguration()
+        {
+            setStdVoiceFromConfig();
+            setVolumeFromConfig();
+            setSpeedFromConfig();
+        }
+
+        #region Voice 
+
+        /// <summary>
+        /// The standard voice configuration key to search for in the app.config file.
+        /// </summary>
+        internal const String STD_VOICE_CONFIG_KEY = "Audio_StandardVoice";
+        /// <summary>
+        /// Sets the standard voice if the corresponding key <see cref="STD_VOICE_CONFIG_KEY"/> 
+        /// was set in the appSettings of the app.config of the current running application.
+        /// </summary>
+        internal void setStdVoiceFromConfig()
+        {
+            try
+            {
+                var config = System.Configuration.ConfigurationManager.AppSettings;
+                if (config != null && config.Count > 0)
+                {
+                    var value = config[STD_VOICE_CONFIG_KEY];
+                    if (value != null)
+                    {
+                        SetStandardVoiceName(value.ToString());
+                    }
+                }
+            }
+            catch { }
+        }
+
+        #endregion
+
+        #region Volume
+
+        /// <summary>
+        /// The sound volume configuration key to search for in the app.config file.
+        /// </summary>
+        internal const String VOLUME_CONFIG_KEY = "Audio_Volume";
+        /// <summary>
+        /// Sets the sound volume level if the corresponding key <see cref="VOLUME_CONFIG_KEY"/> 
+        /// was set in the app.config of the current running application.
+        /// </summary>
+        internal void setVolumeFromConfig()
+        {
+            try
+            {
+                var config = System.Configuration.ConfigurationManager.AppSettings;
+                if (config != null && config.Count > 0)
+                {
+                    var value = config[VOLUME_CONFIG_KEY];
+                    if (value != null)
+                    {
+                        int volume = Convert.ToInt32(value);
+                        Volume = volume;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        #endregion
+
+        #region Speed
+
+        /// <summary>
+        /// The TTS speed configuration key to search for in the app.config file.
+        /// </summary>
+        internal const String SPEED_CONFIG_KEY = "Audio_Speed";
+        /// <summary>
+        /// Sets the TTS speed level if the corresponding key <see cref="SPEED_CONFIG_KEY"/> 
+        /// was set in the app.config of the current running application.
+        /// </summary>
+        internal void setSpeedFromConfig()
+        {
+            try
+            {
+                var config = System.Configuration.ConfigurationManager.AppSettings;
+                if (config != null && config.Count > 0)
+                {
+                    var value = config[SPEED_CONFIG_KEY];
+                    if (value != null)
+                    {
+                        int speed = Convert.ToInt32(value);
+                        Speed = speed;
+                    }
+                }
+            }
+            catch { }
+        }
+
+        #endregion
 
         #endregion
 
