@@ -257,13 +257,20 @@ namespace tud.mci.tangram.audio
                     InstalledVoice voice = v as InstalledVoice;
                     if (voice != null)
                     {
-                        VoiceInfo vi = voice.VoiceInfo;
-                        voices.Add(new Voice(
-                            vi.Name,
-                            vi.Culture.Name,
-                            vi.Gender.ToString(),
-                            vi.Age.ToString()
-                            ));
+                        try
+                        {
+                            VoiceInfo vi = voice.VoiceInfo;
+                            voices.Add(new Voice(
+                                vi.Name,
+                                vi.Culture.Name,
+                                vi.Gender.ToString(),
+                                vi.Age.ToString()
+                                ));
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Exception while gathering installed voices: \r\n" + ex);
+                        }
                     }
                 }
                 InstalledVoices = voices;
