@@ -18,8 +18,28 @@ namespace tud.mci.tangram.audio
     public sealed class AudioRenderer : IDisposable
     {
         #region Members
+                
+        static System.Globalization.CultureInfo _culture = System.Globalization.CultureInfo.CurrentCulture;
 
-        static System.Globalization.CultureInfo culture = System.Globalization.CultureInfo.CurrentCulture;
+        /// <summary>
+        /// The culture
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="DefaultCulture" value="en-US" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// 
+        /// </summary>
+        public static System.Globalization.CultureInfo Culture
+        {
+            get { return AudioRenderer._culture; }
+            set { AudioRenderer._culture = value; }
+        }        
+        
         readonly object _speacerLock = new Object();
         SpeechSynthesizer _speaker = null;
         SpeechSynthesizer Speaker
@@ -53,7 +73,18 @@ namespace tud.mci.tangram.audio
 
         volatile static int _volume = 100;
         /// <summary>
-        /// The volume level for the speech output
+        /// The volume level for the speech output.
+        /// Sets the sound volume level if the corresponding key "Audio_Volume"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Volume" value="100" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
         /// </summary>
         public static int Volume { 
             get { return _volume; } 
@@ -65,6 +96,18 @@ namespace tud.mci.tangram.audio
         /// The speed Level for the speech output. 
         /// Must be a value between -10 and 10. Default is 1.
         /// The value will be automatically fitted into this range.
+        /// Sets the TTS speed level if the corresponding key "Audio_Speed"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Speed" value="5" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// 
         /// </summary>
         public static int Speed
         {
@@ -180,7 +223,7 @@ namespace tud.mci.tangram.audio
                         var voice = GetVoiceByName(v2);
                         if (!voice.IsEmpty)
                         {
-                            if (ignoreCulture || voice.Culture.Equals(culture.Name))
+                            if (ignoreCulture || voice.Culture.Equals(Culture.Name))
                             {
                                 StandardVoice = v2;
                                 return;
@@ -189,7 +232,7 @@ namespace tud.mci.tangram.audio
                     }
                 }
             }
-            SetStandardVoiceByCulture(culture);
+            SetStandardVoiceByCulture(Culture);
         }
         /// <summary>
         /// Sets the standard voice by the current system culture.
@@ -211,7 +254,7 @@ namespace tud.mci.tangram.audio
 
             if (_culture == null)
             {
-                _culture = culture;
+                _culture = Culture;
             }
 
             if (_culture != null)
@@ -332,16 +375,16 @@ namespace tud.mci.tangram.audio
                     CultureInfo _culture = new CultureInfo(cultureName);
                     if (_culture != null)
                     {
-                        culture = _culture;
+                        AudioRenderer.Culture = _culture;
                     }
                 }
             }
             catch { }
             finally
             {
-                if (culture == null)
+                if (Culture == null)
                 {
-                    culture = System.Globalization.CultureInfo.CurrentCulture;
+                    AudioRenderer.Culture = System.Globalization.CultureInfo.CurrentCulture;
                 }
             }
         }
@@ -845,6 +888,7 @@ namespace tud.mci.tangram.audio
             setStdVoiceFromConfig();
             setVolumeFromConfig();
             setSpeedFromConfig();
+            setDefaultCulture();
         }
 
         #region Voice 
@@ -897,7 +941,7 @@ namespace tud.mci.tangram.audio
                     if (value != null)
                     {
                         int volume = Convert.ToInt32(value);
-                        Volume = volume;
+                        AudioRenderer.Volume = volume;
                     }
                 }
             }
@@ -927,7 +971,7 @@ namespace tud.mci.tangram.audio
                     if (value != null)
                     {
                         int speed = Convert.ToInt32(value);
-                        Speed = speed;
+                        AudioRenderer.Speed = speed;
                     }
                 }
             }
@@ -935,7 +979,7 @@ namespace tud.mci.tangram.audio
         }
 
         #endregion
-
+        
         #endregion
 
     }
