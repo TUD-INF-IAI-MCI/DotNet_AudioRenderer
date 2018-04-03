@@ -19,8 +19,7 @@ namespace tud.mci.tangram.audio
     {
         #region Members
                 
-        static System.Globalization.CultureInfo _culture = System.Globalization.CultureInfo.CurrentCulture;
-
+        System.Globalization.CultureInfo _culture = System.Globalization.CultureInfo.CurrentCulture;
         /// <summary>
         /// The culture
         /// 
@@ -36,9 +35,47 @@ namespace tud.mci.tangram.audio
         /// </summary>
         public static System.Globalization.CultureInfo Culture
         {
-            get { return AudioRenderer._culture; }
-            set { AudioRenderer._culture = value; }
-        }        
+            get { return _instance != null ? _instance.GetCulture() : null; }
+            set { if (_instance != null) _instance.SetCulture(value); }
+        }
+
+        /// <summary>
+        /// Gets the culture.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="DefaultCulture" value="en-US" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// </summary>
+        /// <returns>The default culture settings for text-to-speech.</returns>
+        public System.Globalization.CultureInfo GetCulture()
+        {
+            return _culture;
+        }
+
+        /// <summary>
+        /// Sets the culture.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="DefaultCulture" value="en-US" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// </summary>
+        /// <param name="culture">The culture.</param>
+        /// <returns>The new default culture settings for text-to-speech.</returns>
+        public System.Globalization.CultureInfo SetCulture(System.Globalization.CultureInfo culture)
+        {
+            _culture = culture;
+            return _culture;
+        }
         
         readonly object _speacerLock = new Object();
         SpeechSynthesizer _speaker = null;
@@ -71,7 +108,7 @@ namespace tud.mci.tangram.audio
         static Queue _outputQueue = new Queue();
         static Queue OutputQueue = Queue.Synchronized(_outputQueue);
 
-        volatile static int _volume = 100;
+        int _volume = 100;
         /// <summary>
         /// The volume level for the speech output.
         /// Sets the sound volume level if the corresponding key "Audio_Volume"
@@ -86,14 +123,58 @@ namespace tud.mci.tangram.audio
         /// 	[...]
         /// &lt;/configuration&gt;
         /// </summary>
-        public static int Volume { 
-            get { return _volume; } 
-            set { _volume = Math.Min(100, Math.Max(0,value)); } 
+        public static int Volume
+        {
+            get { return _instance != null ? _instance.GetVolume() : 0; }
+            set { if (_instance != null) _instance.SetVolume(value); }
         }
 
-        volatile static int _speed = 1;
         /// <summary>
-        /// The speed Level for the speech output. 
+        /// Gets the volume level for the speech output.
+        /// The corresponding key "Audio_Volume"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Volume" value="100" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// </summary>
+        /// <returns>The volume level.</returns>
+        public int GetVolume()
+        {
+            return _volume;
+        }
+
+        /// <summary>
+        /// Sets the volume level for the speech output.
+        /// Must be a value between 0 and 100.
+        /// The corresponding key "Audio_Volume"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Volume" value="100" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// </summary>
+        /// <param name="volume">The volume level.</param>
+        /// <returns>The new volume level.</returns>
+        public int SetVolume(int volume)
+        {
+            _volume = Math.Min(100, Math.Max(0, volume));
+            return _volume;
+        }
+
+        int _speed = 1;
+        /// <summary>
+        /// The speed level for the speech output. 
         /// Must be a value between -10 and 10. Default is 1.
         /// The value will be automatically fitted into this range.
         /// Sets the TTS speed level if the corresponding key "Audio_Speed"
@@ -111,9 +192,55 @@ namespace tud.mci.tangram.audio
         /// </summary>
         public static int Speed
         {
-            get { return _speed; }
-            set { _speed = Math.Min(10, Math.Max(-10, value)); }
+            get { return _instance != null ? _instance.GetSpeed() : 0; }
+            set { if(_instance != null) _instance.SetSpeed(value); }
         }
+
+        /// <summary>
+        /// Gets the speed level for the speech output. 
+        /// Must be a value between -10 and 10. Default is 1.
+        /// Sets the TTS speed level if the corresponding key "Audio_Speed"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Speed" value="5" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// 
+        /// </summary>
+        /// <returns>The speed level.</returns>
+        public int GetSpeed(){
+            return _speed;
+        }
+
+        /// <summary>
+        /// Ste the speed level for the speech output. 
+        /// Must be a value between -10 and 10. Default is 1.
+        /// Sets the TTS speed level if the corresponding key "Audio_Speed"
+        /// was set in the app.config of the current running application.
+        /// 
+        /// &lt;?xml version ="1.0"?&gt;
+        /// &lt;configuration&gt;
+        ///  	[...]
+        ///  	&lt;appSettings&gt;
+        /// 		&lt;add key="Audio_Speed" value="5" /&gt;
+        /// 	&lt;/appSettings&gt;
+        /// 	[...]
+        /// &lt;/configuration&gt;
+        /// 
+        /// </summary>
+        /// <param name="speed">The new speed level.</param>
+        /// <returns>The speed level.</returns>
+        public int SetSpeed(int speed)
+        {
+            _speed = Math.Min(10, Math.Max(-10, speed));
+            return _speed;
+        }
+
 
         private static String StandardVoice;
 
@@ -375,7 +502,7 @@ namespace tud.mci.tangram.audio
                     CultureInfo _culture = new CultureInfo(cultureName);
                     if (_culture != null)
                     {
-                        AudioRenderer.Culture = _culture;
+                        SetCulture(_culture);
                     }
                 }
             }
@@ -384,7 +511,7 @@ namespace tud.mci.tangram.audio
             {
                 if (Culture == null)
                 {
-                    AudioRenderer.Culture = System.Globalization.CultureInfo.CurrentCulture;
+                    SetCulture(System.Globalization.CultureInfo.CurrentCulture);
                 }
             }
         }
@@ -941,7 +1068,7 @@ namespace tud.mci.tangram.audio
                     if (value != null)
                     {
                         int volume = Convert.ToInt32(value);
-                        AudioRenderer.Volume = volume;
+                        SetVolume(volume);
                     }
                 }
             }
@@ -971,7 +1098,7 @@ namespace tud.mci.tangram.audio
                     if (value != null)
                     {
                         int speed = Convert.ToInt32(value);
-                        AudioRenderer.Speed = speed;
+                        SetSpeed(speed);
                     }
                 }
             }
