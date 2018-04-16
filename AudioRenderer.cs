@@ -242,7 +242,13 @@ namespace tud.mci.tangram.audio
         }
 
 
-        private static String StandardVoice;
+        /// <summary>
+        /// Gets or sets the standard voice name.
+        /// </summary>
+        /// <value>
+        /// The standard voice name.
+        /// </value>
+        public static String StandardVoice { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is currently playing a sound or not.
