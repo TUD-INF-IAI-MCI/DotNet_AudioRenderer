@@ -387,6 +387,8 @@ namespace tud.mci.tangram.audio
 
             if (_culture == null)
             {
+                setDefaultCulture();
+                // if(Culture == null)
                 _culture = Culture;
             }
 
